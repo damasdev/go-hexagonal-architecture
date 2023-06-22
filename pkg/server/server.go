@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,10 +12,15 @@ type Server interface {
 
 type server struct {
 	logger logger.Logger
+	config config.Config
 }
 
-func New(logger logger.Logger) Server {
+func New(
+	config config.Config,
+	logger logger.Logger,
+) Server {
 	return &server{
+		config: config,
 		logger: logger,
 	}
 }
