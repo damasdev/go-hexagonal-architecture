@@ -1,9 +1,12 @@
 package logger
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/diode"
 )
 
 var (
@@ -16,7 +19,11 @@ type zeroLog struct {
 }
 
 func Initialize(cfgs ...config) {
-	handler := zerolog.New(os.Stdout).With().Timestamp().Logger()
+	handler := zerolog.New(
+		diode.NewWriter(os.Stdout, 1000, 10*time.Millisecond, func(missed int) {
+			fmt.Printf("Logger Dropped %d messages", missed)
+		}),
+	).With().Timestamp().Logger()
 
 	config := &configs{}
 	for _, opt := range cfgs {
