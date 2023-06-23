@@ -14,5 +14,5 @@ func init() {
 }
 
 func main() {
-	server.New().Run()
+	server.NewFiber().Run()
 }

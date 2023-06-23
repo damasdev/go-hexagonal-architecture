@@ -13,7 +13,7 @@ import (
 
 type fiberServer struct{}
 
-func New() Server {
+func NewFiber() Server {
 	return &fiberServer{}
 }
 
