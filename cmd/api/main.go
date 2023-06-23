@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
 	"github.com/damasdev/fiber/pkg/server"
@@ -10,7 +8,11 @@ import (
 
 func init() {
 	config.LoadEnvVars()
-	logger.Initialize(os.Stdout, logger.InfoLevel)
+
+	logger.Initialize(
+		logger.WithName("fiber"),
+		logger.WithLevel(logger.InfoLevel),
+	)
 }
 
 func main() {

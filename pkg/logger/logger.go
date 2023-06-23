@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"io"
+	"os"
 
 	"github.com/rs/zerolog"
 )
@@ -21,41 +21,48 @@ var (
 
 type zeroLog struct {
 	handler zerolog.Logger
+	name    string
 }
 
-func Initialize(writer io.Writer, level LogLevel) {
-	handler := zerolog.New(writer).With().Timestamp().Logger()
+func Initialize(cfgs ...config) {
+	handler := zerolog.New(os.Stdout).With().Timestamp().Logger()
+
+	config := &configs{}
+	for _, opt := range cfgs {
+		opt(config)
+	}
 
 	Logger = &zeroLog{
-		handler: handler.Level(toLevel(level)),
+		handler: handler.Level(toLevel(*config.level)),
+		name:    *config.name,
 	}
 }
 
 func (log *zeroLog) Debug(message string, opts ...option) {
-	withContext(log.handler.Debug(), opts...).Msg(message)
+	log.withContext(log.handler.Debug(), opts...).Msg(message)
 }
 
 func (log *zeroLog) Info(message string, opts ...option) {
-	withContext(log.handler.Info(), opts...).Msg(message)
+	log.withContext(log.handler.Info(), opts...).Msg(message)
 }
 
 func (log *zeroLog) Warning(message string, opts ...option) {
-	withContext(log.handler.Warn(), opts...).Msg(message)
+	log.withContext(log.handler.Warn(), opts...).Msg(message)
 }
 
 func (log *zeroLog) Error(message string, opts ...option) {
-	withContext(log.handler.Error(), opts...).Msg(message)
+	log.withContext(log.handler.Error(), opts...).Msg(message)
 }
 
 func (log *zeroLog) Fatal(message string, opts ...option) {
-	withContext(log.handler.Fatal(), opts...).Msg(message)
+	log.withContext(log.handler.Fatal(), opts...).Msg(message)
 }
 
 func (log *zeroLog) Panic(message string, opts ...option) {
-	withContext(log.handler.Panic(), opts...).Msg(message)
+	log.withContext(log.handler.Panic(), opts...).Msg(message)
 }
 
-func withContext(event *zerolog.Event, opts ...option) *zerolog.Event {
+func (log *zeroLog) withContext(event *zerolog.Event, opts ...option) *zerolog.Event {
 
 	model := &options{}
 	for _, opt := range opts {
@@ -68,6 +75,10 @@ func withContext(event *zerolog.Event, opts ...option) *zerolog.Event {
 
 	if err := model.getError(); err != nil {
 		event.Err(*err)
+	}
+
+	if log.name != "" {
+		event.Str("service", log.name)
 	}
 
 	return event
