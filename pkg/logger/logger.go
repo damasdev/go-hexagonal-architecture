@@ -6,7 +6,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type Logger interface {
+type iLogger interface {
 	Debug(message string, options ...any)
 	Info(message string, options ...any)
 	Warning(message string, options ...any)
@@ -15,18 +15,22 @@ type Logger interface {
 	Panic(message string, options ...any)
 }
 
+var (
+	Logger iLogger
+)
+
 type zeroLog struct {
 	handler zerolog.Logger
 }
 
-func New(writer io.Writer, level LogLevel) Logger {
-	logger := zerolog.New(writer).With().Timestamp().Logger()
+func New(writer io.Writer, level logLevel) iLogger {
+	handler := zerolog.New(writer).With().Timestamp().Logger().Level(toLevel(level))
 
-	return &zeroLog{
-		handler: logger.Level(
-			toLevel(level),
-		),
+	Logger = &zeroLog{
+		handler: handler,
 	}
+
+	return Logger
 }
 
 func (log *zeroLog) Debug(message string, options ...any) {

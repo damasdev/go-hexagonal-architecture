@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 
-	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,19 +11,10 @@ type Server interface {
 	Run()
 }
 
-type server struct {
-	logger logger.Logger
-	config config.Config
-}
+type server struct{}
 
-func New(
-	config config.Config,
-	logger logger.Logger,
-) Server {
-	return &server{
-		config: config,
-		logger: logger,
-	}
+func New() Server {
+	return &server{}
 }
 
 func (srv *server) Run() {
@@ -34,7 +24,7 @@ func (srv *server) Run() {
 		return c.SendString("Hello, World!")
 	})
 
-	if err := app.Listen(fmt.Sprintf(":%d", srv.config.GetInt("PORT"))); err != nil {
-		srv.logger.Fatal("failed to start server", err)
+	if err := app.Listen(fmt.Sprintf(":%d", 3000)); err != nil {
+		logger.Logger.Fatal("failed to start server", err)
 	}
 }

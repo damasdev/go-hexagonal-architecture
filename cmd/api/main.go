@@ -8,15 +8,11 @@ import (
 	"github.com/damasdev/fiber/pkg/server"
 )
 
+func init() {
+	config.LoadEnvVars()
+	logger.New(os.Stdout, logger.InfoLevel)
+}
+
 func main() {
-
-	// init configuration
-	config := config.New(".env")
-
-	// init logger
-	threshold := logger.LogLevel(config.GetInt("LOG_THRESHOLD"))
-	logger := logger.New(os.Stdout, threshold)
-
-	// setup and run server
-	server.New(config, logger).Run()
+	server.New().Run()
 }
