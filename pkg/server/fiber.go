@@ -1,14 +1,15 @@
 package server
 
 import (
-	"context"
 	"log"
 	"os"
 	"os/signal"
 	"time"
 
 	routes "github.com/damasdev/fiber/internal/interfaces/http"
+	"github.com/damasdev/fiber/pkg/logger"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 type fiberServer struct{}
@@ -20,7 +21,14 @@ func NewFiber() Server {
 func (server *fiberServer) Run() {
 	app := fiber.New()
 
+	app.Use(recover.New())
+
 	routes.API(app)
+
+	logger.Initialize(
+		logger.WithLevel(logger.InfoLevel),
+		logger.WithName("fiber"),
+	)
 
 	go func() {
 		if err := app.Listen(":" + os.Getenv("PORT")); err != nil {
@@ -32,10 +40,7 @@ func (server *fiberServer) Run() {
 	signal.Notify(quit, os.Interrupt)
 	<-quit
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	if err := app.ShutdownWithContext(ctx); err != nil {
+	if err := app.ShutdownWithTimeout(5 * time.Second); err != nil {
 		log.Fatal(err.Error())
 	}
 }
