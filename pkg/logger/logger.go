@@ -91,9 +91,7 @@ func (log *zeroLog) withContext(event *zerolog.Event, opts ...option) *zerolog.E
 		event.Err(*err)
 	}
 
-	if log.name != "" {
-		event.Str("service", log.name)
-	}
+	event.Str("service", log.name)
 
 	if log.requestTime != nil {
 		processingTime := time.Since(*log.requestTime).Milliseconds()
