@@ -2,6 +2,8 @@ package logger
 
 import (
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/rs/zerolog"
 )
@@ -13,6 +15,8 @@ type iLogger interface {
 	Error(message string, opts ...option)
 	Fatal(message string, opts ...option)
 	Panic(message string, opts ...option)
+
+	SetRequestTime()
 }
 
 var (
@@ -20,8 +24,10 @@ var (
 )
 
 type zeroLog struct {
+	name        string
+	requestTime *time.Time
+
 	handler zerolog.Logger
-	name    string
 }
 
 func Initialize(cfgs ...config) {
@@ -33,8 +39,10 @@ func Initialize(cfgs ...config) {
 	}
 
 	Logger = &zeroLog{
+		name:        *config.name,
+		requestTime: nil,
+
 		handler: handler.Level(toLevel(*config.level)),
-		name:    *config.name,
 	}
 }
 
@@ -62,6 +70,12 @@ func (log *zeroLog) Panic(message string, opts ...option) {
 	log.withContext(log.handler.Panic(), opts...).Msg(message)
 }
 
+func (log *zeroLog) SetRequestTime() {
+	time := time.Now()
+
+	log.requestTime = &time
+}
+
 func (log *zeroLog) withContext(event *zerolog.Event, opts ...option) *zerolog.Event {
 
 	model := &options{}
@@ -79,6 +93,13 @@ func (log *zeroLog) withContext(event *zerolog.Event, opts ...option) *zerolog.E
 
 	if log.name != "" {
 		event.Str("service", log.name)
+	}
+
+	if log.requestTime != nil {
+		processingTime := time.Since(*log.requestTime).Milliseconds()
+		event.Str("latency", strconv.Itoa(int(processingTime))+"ms")
+
+		log.requestTime = nil
 	}
 
 	return event

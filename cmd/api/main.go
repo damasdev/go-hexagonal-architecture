@@ -10,11 +10,12 @@ func init() {
 	config.LoadEnvVars()
 
 	logger.Initialize(
-		logger.WithName("fiber"),
 		logger.WithLevel(logger.InfoLevel),
+		logger.WithName("fiber"),
 	)
 }
 
 func main() {
+	logger.Logger.Info("p")
 	server.NewFiber().Run()
 }
