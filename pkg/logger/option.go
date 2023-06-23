@@ -1,5 +1,12 @@
 package logger
 
+import (
+	"strconv"
+	"time"
+
+	"github.com/rs/zerolog"
+)
+
 type options struct {
 	data *map[string]interface{}
 	err  *error
@@ -17,6 +24,33 @@ func WithError(err error) option {
 	return func(options *options) {
 		options.err = &err
 	}
+}
+
+func (log *zeroLog) withContext(event *zerolog.Event, opts ...option) *zerolog.Event {
+
+	model := &options{}
+	for _, opt := range opts {
+		opt(model)
+	}
+
+	if data := model.getData(); data != nil {
+		event.Interface("data", data)
+	}
+
+	if err := model.getError(); err != nil {
+		event.Err(*err)
+	}
+
+	event.Str("service", log.name)
+
+	if log.requestTime != nil {
+		processingTime := time.Since(*log.requestTime).Milliseconds()
+		event.Str("latency", strconv.Itoa(int(processingTime))+"ms")
+
+		log.requestTime = nil
+	}
+
+	return event
 }
 
 func (opts *options) getData() *map[string]interface{} {

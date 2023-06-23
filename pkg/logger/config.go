@@ -18,11 +18,3 @@ func WithName(name string) config {
 		configs.name = &name
 	}
 }
-
-func (opts *configs) getName() *string {
-	return opts.name
-}
-
-func (opts *configs) getLevel() *LogLevel {
-	return opts.level
-}
