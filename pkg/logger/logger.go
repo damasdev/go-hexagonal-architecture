@@ -23,14 +23,12 @@ type zeroLog struct {
 	handler zerolog.Logger
 }
 
-func New(writer io.Writer, level logLevel) iLogger {
-	handler := zerolog.New(writer).With().Timestamp().Logger().Level(toLevel(level))
+func Initialize(writer io.Writer, level LogLevel) {
+	handler := zerolog.New(writer).With().Timestamp().Logger()
 
 	Logger = &zeroLog{
-		handler: handler,
+		handler: handler.Level(toLevel(level)),
 	}
-
-	return Logger
 }
 
 func (log *zeroLog) Debug(message string, options ...any) {

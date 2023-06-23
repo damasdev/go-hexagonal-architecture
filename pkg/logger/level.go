@@ -4,17 +4,17 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type logLevel uint8
+type LogLevel uint8
 
 var (
-	DebugLevel logLevel = 0 // debug
-	InfoLevel  logLevel = 1 // info
-	WarnLevel  logLevel = 2 // warn
-	ErrorLevel logLevel = 3 // error
-	PanicLevel logLevel = 4 // panic
+	DebugLevel LogLevel = 0 // debug
+	InfoLevel  LogLevel = 1 // info
+	WarnLevel  LogLevel = 2 // warn
+	ErrorLevel LogLevel = 3 // error
+	PanicLevel LogLevel = 4 // panic
 )
 
-var levelMapping = map[logLevel]zerolog.Level{
+var levelMapping = map[LogLevel]zerolog.Level{
 	DebugLevel: zerolog.DebugLevel,
 	InfoLevel:  zerolog.InfoLevel,
 	WarnLevel:  zerolog.WarnLevel,
@@ -22,7 +22,7 @@ var levelMapping = map[logLevel]zerolog.Level{
 	PanicLevel: zerolog.PanicLevel,
 }
 
-func toLevel(level logLevel) zerolog.Level {
+func toLevel(level LogLevel) zerolog.Level {
 	if level, ok := levelMapping[level]; ok {
 		return level
 	}

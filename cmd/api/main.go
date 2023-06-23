@@ -10,7 +10,7 @@ import (
 
 func init() {
 	config.LoadEnvVars()
-	logger.New(os.Stdout, logger.InfoLevel)
+	logger.Initialize(os.Stdout, logger.InfoLevel)
 }
 
 func main() {
