@@ -13,7 +13,6 @@ type iLogger interface {
 	Info(message string, opts ...option)
 	Warning(message string, opts ...option)
 	Error(message string, opts ...option)
-	Fatal(message string, opts ...option)
 	Panic(message string, opts ...option)
 
 	SetRequestTime()
@@ -60,10 +59,6 @@ func (log *zeroLog) Warning(message string, opts ...option) {
 
 func (log *zeroLog) Error(message string, opts ...option) {
 	log.withContext(log.handler.Error(), opts...).Msg(message)
-}
-
-func (log *zeroLog) Fatal(message string, opts ...option) {
-	log.withContext(log.handler.Fatal(), opts...).Msg(message)
 }
 
 func (log *zeroLog) Panic(message string, opts ...option) {
