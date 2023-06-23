@@ -28,7 +28,7 @@ func (server *fiberServer) Run() {
 
 	level, err := strconv.ParseInt(os.Getenv("LOG_THRESHOLD"), 10, 64)
 	if err != nil {
-		level = int64(logger.InfoLevel)
+		level = int64(logger.WarnLevel)
 	}
 
 	logger.Initialize(
