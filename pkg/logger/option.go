@@ -1,9 +1,6 @@
 package logger
 
 import (
-	"strconv"
-	"time"
-
 	"github.com/rs/zerolog"
 )
 
@@ -42,13 +39,6 @@ func (log *zeroLog) withContext(event *zerolog.Event, opts ...option) *zerolog.E
 	}
 
 	event.Str("service", log.name)
-
-	if log.requestTime != nil {
-		processingTime := time.Since(*log.requestTime).Milliseconds()
-		event.Str("latency", strconv.Itoa(int(processingTime))+"ms")
-
-		log.requestTime = nil
-	}
 
 	return event
 }

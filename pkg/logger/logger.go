@@ -2,29 +2,16 @@ package logger
 
 import (
 	"os"
-	"time"
 
 	"github.com/rs/zerolog"
 )
-
-type iLogger interface {
-	Debug(message string, opts ...option)
-	Info(message string, opts ...option)
-	Warning(message string, opts ...option)
-	Error(message string, opts ...option)
-	Panic(message string, opts ...option)
-
-	SetRequestTime()
-}
 
 var (
 	Logger iLogger
 )
 
 type zeroLog struct {
-	name        string
-	requestTime *time.Time
-
+	name    string
 	handler zerolog.Logger
 }
 
@@ -37,9 +24,7 @@ func Initialize(cfgs ...config) {
 	}
 
 	Logger = &zeroLog{
-		name:        *config.name,
-		requestTime: nil,
-
+		name:    *config.name,
 		handler: handler.Level(toLevel(*config.level)),
 	}
 }
@@ -62,10 +47,4 @@ func (log *zeroLog) Error(message string, opts ...option) {
 
 func (log *zeroLog) Panic(message string, opts ...option) {
 	log.withContext(log.handler.Panic(), opts...).Msg(message)
-}
-
-func (log *zeroLog) SetRequestTime() {
-	time := time.Now()
-
-	log.requestTime = &time
 }
