@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"strconv"
 
 	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
@@ -12,16 +11,11 @@ import (
 func main() {
 
 	// init configuration
-	config := config.New()
-
-	// setup logger threshold
-	level, err := strconv.ParseUint(config.Get("LOG_LEVEL"), 10, 8)
-	if err != nil {
-		level = uint64(logger.WarnLevel)
-	}
+	config := config.New(".env")
 
 	// init logger
-	logger := logger.New(os.Stdout, logger.LogLevel(level))
+	threshold := logger.LogLevel(config.GetInt("LOG_THRESHOLD"))
+	logger := logger.New(os.Stdout, threshold)
 
 	// setup and run server
 	server.New(config, logger).Run()
