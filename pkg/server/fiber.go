@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 
 	routes "github.com/damasdev/fiber/internal/interfaces/http"
@@ -25,13 +26,18 @@ func (server *fiberServer) Run() {
 
 	routes.API(app)
 
+	level, err := strconv.ParseInt(os.Getenv("LOG_THRESHOLD"), 10, 64)
+	if err != nil {
+		level = int64(logger.InfoLevel)
+	}
+
 	logger.Initialize(
-		logger.WithLevel(logger.InfoLevel),
-		logger.WithName("fiber"),
+		logger.WithLevel(logger.LogLevel(level)),
+		logger.WithName(os.Getenv("APP_NAME")),
 	)
 
 	go func() {
-		if err := app.Listen(":" + os.Getenv("PORT")); err != nil {
+		if err := app.Listen(":" + os.Getenv("APP_PORT")); err != nil {
 			log.Fatal("Shutting down the server.")
 		}
 	}()

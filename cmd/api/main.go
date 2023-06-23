@@ -7,7 +7,6 @@ import (
 
 func init() {
 	config.LoadEnvVars()
-
 }
 
 func main() {
