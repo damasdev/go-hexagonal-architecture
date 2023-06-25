@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/damasdev/fiber/cmd"
 	"github.com/damasdev/fiber/pkg/config"
-	"github.com/damasdev/fiber/pkg/server"
 )
 
 func init() {
@@ -10,5 +10,5 @@ func init() {
 }
 
 func main() {
-	server.NewFiber().Run()
+	cmd.Run()
 }
