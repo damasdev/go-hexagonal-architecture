@@ -26,5 +26,6 @@ func toLevel(level LogLevel) zerolog.Level {
 	if level, ok := levelMapping[level]; ok {
 		return level
 	}
-	return zerolog.InfoLevel
+
+	return zerolog.WarnLevel
 }

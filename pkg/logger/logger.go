@@ -1,17 +1,23 @@
 package logger
 
 import (
-	"fmt"
 	"os"
-	"time"
 
+	"github.com/damasdev/fiber/pkg/log"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/diode"
 )
 
 var (
 	Logger iLogger
 )
+
+type iLogger interface {
+	Debug(message string, opts ...log.Option)
+	Info(message string, opts ...log.Option)
+	Warning(message string, opts ...log.Option)
+	Error(message string, opts ...log.Option)
+	Panic(message string, opts ...log.Option)
+}
 
 type zeroLog struct {
 	name    string
@@ -19,16 +25,17 @@ type zeroLog struct {
 }
 
 func Initialize(cfgs ...config) {
-	handler := zerolog.New(
-		diode.NewWriter(os.Stdout, 1000, 10*time.Millisecond, func(missed int) {
-			fmt.Printf("Logger Dropped %d messages", missed)
-		}),
-	).With().Timestamp().Logger()
 
 	config := &configs{}
-	for _, opt := range cfgs {
-		opt(config)
+	for _, cfg := range cfgs {
+		cfg(config)
 	}
+
+	if config.writer == nil {
+		config.writer = os.Stdout
+	}
+
+	handler := zerolog.New(config.writer).With().Timestamp().Logger()
 
 	Logger = &zeroLog{
 		name:    *config.name,
@@ -36,22 +43,42 @@ func Initialize(cfgs ...config) {
 	}
 }
 
-func (log *zeroLog) Debug(message string, opts ...option) {
-	log.withContext(log.handler.Debug(), opts...).Msg(message)
+func (l *zeroLog) Debug(message string, opts ...log.Option) {
+	l.withContext(l.handler.Debug(), opts...).Msg(message)
 }
 
-func (log *zeroLog) Info(message string, opts ...option) {
-	log.withContext(log.handler.Info(), opts...).Msg(message)
+func (l *zeroLog) Info(message string, opts ...log.Option) {
+	l.withContext(l.handler.Info(), opts...).Msg(message)
 }
 
-func (log *zeroLog) Warning(message string, opts ...option) {
-	log.withContext(log.handler.Warn(), opts...).Msg(message)
+func (l *zeroLog) Warning(message string, opts ...log.Option) {
+	l.withContext(l.handler.Warn(), opts...).Msg(message)
 }
 
-func (log *zeroLog) Error(message string, opts ...option) {
-	log.withContext(log.handler.Error(), opts...).Msg(message)
+func (l *zeroLog) Error(message string, opts ...log.Option) {
+	l.withContext(l.handler.Error(), opts...).Msg(message)
 }
 
-func (log *zeroLog) Panic(message string, opts ...option) {
-	log.withContext(log.handler.Panic(), opts...).Msg(message)
+func (l *zeroLog) Panic(message string, opts ...log.Option) {
+	l.withContext(l.handler.Panic(), opts...).Msg(message)
+}
+
+func (l *zeroLog) withContext(event *zerolog.Event, opts ...log.Option) *zerolog.Event {
+
+	log := &log.Options{}
+	for _, opt := range opts {
+		opt(log)
+	}
+
+	if data := log.GetData(); data != nil {
+		event.Interface("data", data)
+	}
+
+	if err := log.GetError(); err != nil {
+		event.Err(*err)
+	}
+
+	event.Str("service", l.name)
+
+	return event
 }
