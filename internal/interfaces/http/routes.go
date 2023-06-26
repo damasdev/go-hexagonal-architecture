@@ -1,20 +1,22 @@
 package routes
 
 import (
-	"github.com/damasdev/fiber/pkg/log"
-	"github.com/damasdev/fiber/pkg/logger"
+	userHandler "github.com/damasdev/fiber/internal/interfaces/http/user"
 	"github.com/gofiber/fiber/v2"
 )
 
 func API(app *fiber.App) {
-	// repository
 
-	// service
+	// Repository
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		defer func() {
-			logger.Logger.Debug("hello world", log.WithData(map[string]any{"hello": "world"}))
-		}()
-		return c.SendString("Hello, World!")
-	})
+	// Server
+
+	// Handler
+	userHandler := userHandler.New()
+
+	// Routes
+	api := app.Group("api")
+
+	// User Route
+	api.Get("/users", userHandler.FindAll)
 }
