@@ -1,7 +1,7 @@
 package routes
 
 import (
-	userHandler "github.com/damasdev/fiber/internal/interfaces/http/user"
+	userHandler "github.com/damasdev/fiber/internal/interfaces/http/v1/user"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,8 +15,8 @@ func API(app *fiber.App) {
 	userHandler := userHandler.New()
 
 	// Routes
-	api := app.Group("api")
+	v1 := app.Group("api/v1")
 
 	// User Route
-	api.Get("/users", userHandler.FindAll)
+	v1.Get("/users", userHandler.FindAll)
 }

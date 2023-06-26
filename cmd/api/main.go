@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"fmt"
@@ -8,24 +8,19 @@ import (
 	"strconv"
 	"time"
 
-	routes "github.com/damasdev/fiber/internal/interfaces/http"
+	"github.com/damasdev/fiber/internal/interfaces/http/routes"
+	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/rs/zerolog/diode"
 )
 
-type Server interface {
-	Run()
+func init() {
+	config.LoadEnvVars()
 }
 
-type fiberServer struct{}
-
-func New() Server {
-	return &fiberServer{}
-}
-
-func (server *fiberServer) Run() {
+func main() {
 	app := fiber.New()
 
 	app.Use(recover.New())
