@@ -57,7 +57,7 @@ func (server *fiberServer) Run() {
 	signal.Notify(quit, os.Interrupt)
 	<-quit
 
-	if err := app.ShutdownWithTimeout(5 * time.Second); err != nil {
+	if err := app.Shutdown(); err != nil {
 		log.Fatal(err.Error())
 	}
 }

@@ -2,9 +2,11 @@ package logger
 
 import (
 	"os"
+	"time"
 
 	"github.com/damasdev/fiber/pkg/log"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/pkgerrors"
 )
 
 var (
@@ -35,11 +37,12 @@ func Initialize(cfgs ...config) {
 		config.writer = os.Stdout
 	}
 
-	handler := zerolog.New(config.writer).With().Timestamp().Logger()
+	zerolog.DurationFieldUnit = time.Nanosecond
+	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
 	Logger = &zeroLog{
 		name:    *config.name,
-		handler: handler.Level(toLevel(*config.level)),
+		handler: zerolog.New(config.writer).With().Timestamp().Logger().Level(toLevel(*config.level)),
 	}
 }
 
