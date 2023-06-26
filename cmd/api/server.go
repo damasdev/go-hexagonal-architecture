@@ -9,6 +9,6 @@ func init() {
 	config.LoadEnvVars()
 }
 
-func Run() {
-	server.NewFiber().Run()
+func startServer() {
+	server.New().Run()
 }

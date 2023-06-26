@@ -21,7 +21,7 @@ type Server interface {
 
 type fiberServer struct{}
 
-func NewFiber() Server {
+func New() Server {
 	return &fiberServer{}
 }
 

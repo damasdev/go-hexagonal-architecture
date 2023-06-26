@@ -9,7 +9,7 @@ func Command() *cli.Command {
 		Name:  "start",
 		Usage: "start server",
 		Action: func(c *cli.Context) error {
-			Run()
+			startServer()
 			return nil
 		},
 	}
