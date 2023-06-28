@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"os"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 
 type Server interface {
 	Run() error
-	Stop() error
+	Stop(context.Context) error
 
 	RegisterMiddleware()
 	RegisterHandler()
@@ -23,7 +24,9 @@ type fiberServer struct {
 
 func New() Server {
 	return &fiberServer{
-		app: fiber.New(),
+		app: fiber.New(fiber.Config{
+			IdleTimeout: time.Second * 5,
+		}),
 	}
 }
 
@@ -31,8 +34,8 @@ func (f *fiberServer) Run() error {
 	return f.app.Listen(":" + os.Getenv("APP_PORT"))
 }
 
-func (f *fiberServer) Stop() error {
-	return f.app.ShutdownWithTimeout(5 * time.Second)
+func (f *fiberServer) Stop(ctx context.Context) error {
+	return f.app.ShutdownWithContext(ctx)
 }
 
 func (f *fiberServer) RegisterMiddleware() {

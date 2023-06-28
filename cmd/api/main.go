@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -14,13 +15,33 @@ import (
 	"github.com/rs/zerolog/diode"
 )
 
-func init() {
-	config.LoadEnvVars()
-}
-
 func main() {
 
 	server := server.New()
+
+	server.RegisterMiddleware()
+	server.RegisterHandler()
+
+	go func() {
+		if err := server.Run(); err != nil {
+			log.Fatal("Shutting down the server.")
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := server.Stop(ctx); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func init() {
+	config.LoadEnvVars()
 
 	level, err := strconv.ParseInt(os.Getenv("LOG_THRESHOLD"), 10, 64)
 	if err != nil {
@@ -36,21 +57,4 @@ func main() {
 		logger.WithLevel(logger.LogLevel(level)),
 		logger.WithName(os.Getenv("APP_NAME")),
 	)
-
-	server.RegisterMiddleware()
-	server.RegisterHandler()
-
-	go func() {
-		if err := server.Run(); err != nil {
-			log.Fatal("Shutting down the server.")
-		}
-	}()
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-
-	if err := server.Stop(); err != nil {
-		log.Fatal(err.Error())
-	}
 }
