@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func API(app *fiber.App) {
+func API(app fiber.Router) {
 
 	// Repository
 
