@@ -1,11 +1,11 @@
 package routes
 
 import (
-	userHandler "github.com/damasdev/fiber/internal/interfaces/http/v1/user"
+	userHandler "github.com/damasdev/fiber/internal/interfaces/http/handler/user"
 	"github.com/gofiber/fiber/v2"
 )
 
-func API(app fiber.Router) {
+func API(app *fiber.App) {
 
 	// Repository
 

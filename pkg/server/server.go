@@ -18,27 +18,28 @@ type Server interface {
 }
 
 type fiberServer struct {
-	*fiber.App
+	app *fiber.App
 }
 
 func New() Server {
 	return &fiberServer{
-		fiber.New(),
+		app: fiber.New(),
 	}
 }
 
 func (f *fiberServer) Run() error {
-	return f.Listen(":" + os.Getenv("APP_PORT"))
+	return f.app.Listen(":" + os.Getenv("APP_PORT"))
 }
 
 func (f *fiberServer) Stop() error {
-	return f.ShutdownWithTimeout(5 * time.Second)
+	return f.app.ShutdownWithTimeout(5 * time.Second)
 }
 
 func (f *fiberServer) RegisterMiddleware() {
-	f.Use(recover.New())
+	// Register Middleware
+	f.app.Use(recover.New())
 }
 
 func (f *fiberServer) RegisterHandler() {
-	routes.API(f)
+	routes.API(f.app)
 }
