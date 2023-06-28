@@ -3,6 +3,7 @@ package user
 import (
 	"github.com/damasdev/fiber/pkg/log"
 	"github.com/damasdev/fiber/pkg/logger"
+	"github.com/damasdev/fiber/pkg/response"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,5 +17,5 @@ func (h *Handler) FindAll(c *fiber.Ctx) error {
 	defer func() {
 		logger.Logger.Debug("hello world", log.WithData(map[string]any{"hello": "world"}))
 	}()
-	return c.JSON("Hello, World!")
+	return c.JSON(response.NewResponse(fiber.StatusOK, "OK", "Hello World"))
 }

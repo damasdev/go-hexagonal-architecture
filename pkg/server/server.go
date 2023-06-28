@@ -2,8 +2,8 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"os"
-	"time"
 
 	"github.com/damasdev/fiber/internal/interfaces/http/routes"
 	"github.com/gofiber/fiber/v2"
@@ -15,6 +15,7 @@ type Server interface {
 	Stop(context.Context) error
 
 	RegisterMiddleware()
+	RegisterHook()
 	RegisterHandler()
 }
 
@@ -25,7 +26,7 @@ type fiberServer struct {
 func New() Server {
 	return &fiberServer{
 		app: fiber.New(fiber.Config{
-			IdleTimeout: time.Second * 5,
+			ErrorHandler: DefaultErrorHandler,
 		}),
 	}
 }
@@ -39,10 +40,17 @@ func (f *fiberServer) Stop(ctx context.Context) error {
 }
 
 func (f *fiberServer) RegisterMiddleware() {
-	// Register Middleware
 	f.app.Use(recover.New())
 }
 
 func (f *fiberServer) RegisterHandler() {
 	routes.API(f.app)
+}
+
+func (f *fiberServer) RegisterHook() {
+
+	f.app.Hooks().OnShutdown(func() error {
+		fmt.Println("shutdown..")
+		return nil
+	})
 }
