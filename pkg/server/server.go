@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/damasdev/fiber/internal/interfaces/http/routes"
+	"github.com/damasdev/fiber/pkg/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
@@ -25,9 +26,7 @@ type fiberServer struct {
 
 func New() Server {
 	return &fiberServer{
-		app: fiber.New(fiber.Config{
-			ErrorHandler: DefaultErrorHandler,
-		}),
+		app: fiber.New(config.FiberConfig()),
 	}
 }
 

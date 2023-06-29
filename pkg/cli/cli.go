@@ -19,7 +19,7 @@ func NewCLI() Command {
 	return &command{
 		app: &cli.App{
 			Name:  os.Getenv("APP_NAME"),
-			Usage: "Command-line interface for main application",
+			Usage: "Command-line interface for all service",
 		},
 	}
 }
