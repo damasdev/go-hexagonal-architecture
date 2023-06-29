@@ -13,11 +13,12 @@ import (
 func FiberConfig() fiber.Config {
 	// Define server settings.
 	readTimeoutSecondsCount, _ := strconv.Atoi(os.Getenv("SERVER_READ_TIMEOUT"))
+	isPrefork, _ := strconv.ParseBool(os.Getenv("SERVER_PREFORK"))
 
 	// Return Fiber configuration.
 	return fiber.Config{
 		AppName:     os.Getenv("APP_NAME"),
-		Prefork:     true,
+		Prefork:     isPrefork,
 		ReadTimeout: time.Second * time.Duration(readTimeoutSecondsCount),
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			// Status code defaults to 500
