@@ -17,5 +17,11 @@ func (h *Handler) FindAll(c *fiber.Ctx) error {
 	defer func() {
 		logger.Logger.Debug("hello world", log.WithData(map[string]any{"hello": "world"}))
 	}()
-	return c.JSON(response.NewResponse(fiber.StatusOK, "OK", "Hello World"))
+
+	response := response.DefaultResponse{}
+	response.Status.Code = fiber.StatusOK
+	response.Status.Message = "OK"
+	response.Data = "Hello World"
+
+	return c.JSON(response)
 }

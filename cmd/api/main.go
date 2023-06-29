@@ -16,8 +16,8 @@ func main() {
 
 	cli := cli.NewCLI()
 
+	// register all command-line
 	cli.RegisterCommand(
-		// register all command-line
 		server.Command(),
 	)
 
