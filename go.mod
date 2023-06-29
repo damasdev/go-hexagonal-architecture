@@ -6,6 +6,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.47.0
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.29.1
+	github.com/urfave/cli/v2 v2.25.7
 )
 
 require (
@@ -23,7 +24,6 @@ require (
 	github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94 // indirect
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
-	github.com/urfave/cli/v2 v2.25.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.47.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
