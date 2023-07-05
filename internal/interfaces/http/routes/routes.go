@@ -1,6 +1,8 @@
 package routes
 
 import (
+	userService "github.com/damasdev/fiber/internal/core/service/user"
+	userRepository "github.com/damasdev/fiber/internal/infrastructure/repository/mongodb/user"
 	userHandler "github.com/damasdev/fiber/internal/interfaces/http/handler/user"
 	"github.com/gofiber/fiber/v2"
 )
@@ -8,15 +10,17 @@ import (
 func API(app *fiber.App) {
 
 	// Repository
+	userRepository := userRepository.New()
 
-	// Server
+	// Service
+	userService := userService.New(userRepository)
 
 	// Handler
-	userHandler := userHandler.New()
+	userHandler := userHandler.New(userService)
 
 	// Routes
 	v1 := app.Group("api/v1")
 
 	// User Route
-	v1.Get("/users", userHandler.FindAll)
+	v1.Get("/users", userHandler.List)
 }
