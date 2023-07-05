@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -12,7 +11,6 @@ import (
 	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
 	"github.com/damasdev/fiber/pkg/server"
-	"github.com/rs/zerolog/diode"
 )
 
 func init() {
@@ -24,11 +22,7 @@ func init() {
 	}
 
 	logger.Initialize(
-		logger.WithWriter(
-			diode.NewWriter(os.Stdout, 1000, 10*time.Millisecond, func(missed int) {
-				fmt.Printf("Logger Dropped %d messages", missed)
-			}),
-		),
+		logger.WithWriter(os.Stdout),
 		logger.WithLevel(logger.LogLevel(level)),
 		logger.WithName(os.Getenv("APP_NAME")),
 	)
