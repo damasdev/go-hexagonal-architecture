@@ -1,6 +1,6 @@
 package response
 
-type format struct {
+type formatJson struct {
 	Status struct {
 		Code    int    `json:"code"`
 		Message string `json:"message"`
@@ -10,6 +10,6 @@ type format struct {
 	Errors interface{} `json:"errors,omitempty"`
 }
 
-func New() format {
-	return format{}
+func New() formatJson {
+	return formatJson{}
 }
