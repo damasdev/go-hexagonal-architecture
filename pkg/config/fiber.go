@@ -30,7 +30,7 @@ func FiberConfig() fiber.Config {
 			// Status code defaults to 500
 			code := fiber.StatusInternalServerError
 			message := err.Error()
-			response := response.DefaultResponse{}
+			json := response.New()
 
 			// Retrieve the custom status code if it's a *fiber.Error
 			var e *fiber.Error
@@ -42,8 +42,8 @@ func FiberConfig() fiber.Config {
 				message = "not found"
 			}
 
-			response.Status.Code = code
-			response.Status.Message = message
+			json.Status.Code = code
+			json.Status.Message = message
 
 			switch code {
 			case fiber.StatusInternalServerError:
@@ -53,7 +53,7 @@ func FiberConfig() fiber.Config {
 			}
 
 			// Return status code with error message
-			return c.Status(code).JSON(response)
+			return c.Status(code).JSON(json)
 		},
 	}
 }

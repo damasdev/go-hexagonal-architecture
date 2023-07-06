@@ -1,6 +1,6 @@
 package response
 
-type DefaultResponse struct {
+type format struct {
 	Status struct {
 		Code    int    `json:"code"`
 		Message string `json:"message"`
@@ -8,4 +8,8 @@ type DefaultResponse struct {
 	Data   interface{} `json:"data,omitempty"`
 	Meta   interface{} `json:"meta,omitempty"`
 	Errors interface{} `json:"errors,omitempty"`
+}
+
+func New() format {
+	return format{}
 }
