@@ -16,6 +16,17 @@ import (
 func init() {
 	config.LoadEnvVars()
 
+	// config.ConnectMongoDB()
+}
+
+func main() {
+
+	server := server.New()
+
+	server.RegisterMiddleware()
+	server.RegisterHook()
+	server.RegisterHandler()
+
 	level, err := strconv.ParseInt(os.Getenv("LOG_THRESHOLD"), 10, 64)
 	if err != nil {
 		level = int64(logger.WarnLevel)
@@ -26,15 +37,6 @@ func init() {
 		logger.WithLevel(logger.LogLevel(level)),
 		logger.WithName(os.Getenv("APP_NAME")),
 	)
-}
-
-func main() {
-
-	server := server.New()
-
-	server.RegisterMiddleware()
-	server.RegisterHook()
-	server.RegisterHandler()
 
 	go func() {
 		if err := server.Run(); err != nil {
