@@ -5,11 +5,11 @@ import (
 )
 
 type service struct {
-	repository port.UserRepository
+	userRepo port.UserRepository
 }
 
-func New(repository port.UserRepository) port.UserService {
+func New(userRepository port.UserRepository) port.UserService {
 	return &service{
-		repository: repository,
+		userRepo: userRepository,
 	}
 }
