@@ -13,7 +13,7 @@ func TestMockWriter_Write(t *testing.T) {
 	buffer := bytes.NewBuffer(nil)
 
 	// Create a new instance of mockWriter
-	mockWriter := mocks.NewMockWritter(buffer)
+	mockWriter := mocks.NewMockWriter(buffer)
 
 	// Test Write method
 	message := []byte("Hello, World!")
@@ -28,7 +28,7 @@ func TestNewMockWriter(t *testing.T) {
 	buffer := bytes.NewBuffer(nil)
 
 	// Test NewMockWriter function
-	writer := mocks.NewMockWritter(buffer)
+	writer := mocks.NewMockWriter(buffer)
 	assert.NotNil(t, writer)
 
 	// Test Write method of the returned writer

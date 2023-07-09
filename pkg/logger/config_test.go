@@ -16,7 +16,7 @@ func TestConfigs(t *testing.T) {
 	// Test initial values
 	assert.Nil(t, opts.GetName())
 	assert.Nil(t, opts.GetLevel())
-	assert.Nil(t, opts.GetWritter())
+	assert.Nil(t, opts.GetWriter())
 
 	// Test WithLevel function
 	level := logger.InfoLevel
@@ -29,7 +29,7 @@ func TestConfigs(t *testing.T) {
 	assert.Equal(t, name, *opts.GetName())
 
 	// Test WithWriter function
-	writer := mocks.NewMockWritter(bytes.NewBuffer(nil))
+	writer := mocks.NewMockWriter(bytes.NewBuffer(nil))
 	logger.WithWriter(writer)(&opts)
-	assert.Equal(t, writer, opts.GetWritter())
+	assert.Equal(t, writer, opts.GetWriter())
 }

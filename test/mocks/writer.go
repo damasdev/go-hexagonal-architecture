@@ -13,7 +13,7 @@ func (m *mockWriter) Write(p []byte) (n int, err error) {
 	return m.buffer.Write(p)
 }
 
-func NewMockWritter(buffer *bytes.Buffer) io.Writer {
+func NewMockWriter(buffer *bytes.Buffer) io.Writer {
 	return &mockWriter{
 		buffer: buffer,
 	}

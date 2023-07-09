@@ -39,6 +39,6 @@ func (options *Configs) GetLevel() *LogLevel {
 	return options.level
 }
 
-func (options *Configs) GetWritter() io.Writer {
+func (options *Configs) GetWriter() io.Writer {
 	return options.writer
 }
