@@ -22,7 +22,7 @@ var levelMapping = map[LogLevel]zerolog.Level{
 	PanicLevel: zerolog.PanicLevel,
 }
 
-func toLevel(level LogLevel) zerolog.Level {
+func ToLevel(level LogLevel) zerolog.Level {
 	if level, ok := levelMapping[level]; ok {
 		return level
 	}

@@ -28,7 +28,7 @@ type zeroLog struct {
 
 func Initialize(cfgs ...config) {
 
-	config := &configs{}
+	config := &Configs{}
 	for _, cfg := range cfgs {
 		cfg(config)
 	}
@@ -42,7 +42,7 @@ func Initialize(cfgs ...config) {
 
 	Logger = &zeroLog{
 		name:    *config.name,
-		handler: zerolog.New(config.writer).With().Timestamp().Logger().Level(toLevel(*config.level)),
+		handler: zerolog.New(config.writer).With().Timestamp().Logger().Level(ToLevel(*config.level)),
 	}
 }
 
