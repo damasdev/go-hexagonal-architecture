@@ -6,11 +6,9 @@ build/api:
 run/api:
 	go run ./cmd/api
 
-test:
-	go test -v ./test/..
-
 coverage:
-	go test ./test/... -coverprofile=cover.out -coverpkg ./... && go tool cover -func=cover.out
+	go test ./... -v -coverprofile=coverage.out && go tool cover -func=coverage.out
 
 clean:
 	rm -fr ./bin
+	rm coverage.out

@@ -24,8 +24,8 @@ func (h *Handler) List(c *fiber.Ctx) error {
 	}()
 
 	json := response.New()
-	json.Status.Code = fiber.StatusOK
-	json.Status.Message = response.StatusOK
+	json.Status.Code = response.StatusOK
+	json.Status.Message = response.StatusText(response.StatusOK)
 	json.Data = "Hello World"
 
 	return c.JSON(json)
