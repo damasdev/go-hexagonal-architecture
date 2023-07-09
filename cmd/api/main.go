@@ -8,9 +8,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/damasdev/fiber/internal/interfaces/http/routes"
 	"github.com/damasdev/fiber/pkg/config"
 	"github.com/damasdev/fiber/pkg/logger"
-	"github.com/damasdev/fiber/pkg/server"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 func init() {
@@ -21,11 +23,13 @@ func init() {
 
 func main() {
 
-	server := server.New()
+	server := fiber.New(config.FiberConfig())
 
-	server.RegisterMiddleware()
-	server.RegisterHook()
-	server.RegisterHandler()
+	// Register Middleware
+	server.Use(recover.New())
+
+	// Register Router
+	routes.API(server)
 
 	level, err := strconv.ParseInt(os.Getenv("LOG_THRESHOLD"), 10, 64)
 	if err != nil {
@@ -39,7 +43,7 @@ func main() {
 	)
 
 	go func() {
-		if err := server.Run(); err != nil {
+		if err := server.Listen(":" + os.Getenv("APP_PORT")); err != nil {
 			log.Fatal("Shutting down the server.")
 		}
 	}()
@@ -51,7 +55,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	if err := server.Stop(ctx); err != nil {
+	if err := server.ShutdownWithContext(ctx); err != nil {
 		log.Fatal(err.Error())
 	}
 }
