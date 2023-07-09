@@ -39,15 +39,17 @@ func (f *fiberServer) Stop(ctx context.Context) error {
 }
 
 func (f *fiberServer) RegisterMiddleware() {
+	// Register Middleware
 	f.app.Use(recover.New())
 }
 
 func (f *fiberServer) RegisterHandler() {
+	// Register Router
 	routes.API(f.app)
 }
 
 func (f *fiberServer) RegisterHook() {
-
+	// Register Hook On Shutdown
 	f.app.Hooks().OnShutdown(func() error {
 		fmt.Println("shutdown..")
 		return nil
