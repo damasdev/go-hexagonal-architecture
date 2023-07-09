@@ -23,10 +23,10 @@ func (h *Handler) List(c *fiber.Ctx) error {
 		logger.Logger.Debug("hello world", log.WithData(map[string]any{"hello": "world"}))
 	}()
 
-	json := response.New()
-	json.Status.Code = response.StatusOK
-	json.Status.Message = response.StatusText(response.StatusOK)
-	json.Data = "Hello World"
+	resp := response.New()
+	resp.Status.Code = response.StatusOK
+	resp.Status.Message = response.StatusText(response.StatusOK)
+	resp.Data = "Hello World"
 
-	return c.JSON(json)
+	return c.JSON(resp)
 }

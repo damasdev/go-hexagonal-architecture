@@ -9,19 +9,19 @@ import (
 
 func TestResponse(t *testing.T) {
 	// Create a new instance of Response
-	response := response.New()
+	resp := response.New()
 
 	// Set values for the response fields
-	response.Status.Code = 200
-	response.Status.Message = "Success"
-	response.Data = "Some data"
-	response.Meta = map[string]interface{}{"key": "value"}
-	response.Errors = nil
+	resp.Status.Code = 200
+	resp.Status.Message = "Success"
+	resp.Data = "Some data"
+	resp.Meta = map[string]interface{}{"key": "value"}
+	resp.Errors = nil
 
 	// Assert the properties of the response
-	assert.Equal(t, 200, response.Status.Code)
-	assert.Equal(t, "Success", response.Status.Message)
-	assert.Equal(t, "Some data", response.Data)
-	assert.Equal(t, map[string]interface{}{"key": "value"}, response.Meta)
-	assert.Nil(t, response.Errors)
+	assert.Equal(t, 200, resp.Status.Code)
+	assert.Equal(t, "Success", resp.Status.Message)
+	assert.Equal(t, "Some data", resp.Data)
+	assert.Equal(t, map[string]interface{}{"key": "value"}, resp.Meta)
+	assert.Nil(t, resp.Errors)
 }
