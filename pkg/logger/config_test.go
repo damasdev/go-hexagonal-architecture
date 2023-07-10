@@ -26,7 +26,7 @@ func TestConfigs(t *testing.T) {
 	// Test WithName function
 	name := "mylogger"
 	logger.WithName(name)(&cfg)
-	assert.Equal(t, name, *cfg.GetName())
+	assert.Equal(t, name, cfg.GetName())
 
 	// Test WithWriter function
 	writer := mocks.NewMockWriter(bytes.NewBuffer(nil))

@@ -2,7 +2,6 @@ package logger
 
 import (
 	"os"
-	"time"
 
 	"github.com/damasdev/fiber/pkg/log"
 	"github.com/rs/zerolog"
@@ -22,7 +21,6 @@ type iLogger interface {
 }
 
 type logger struct {
-	name    string
 	handler zerolog.Logger
 }
 
@@ -33,40 +31,42 @@ func Initialize(cfgs ...configFunc) {
 		fn(cfg)
 	}
 
-	if cfg.writer == nil {
-		cfg.writer = os.Stdout
+	if cfg.GetWriter() == nil {
+		cfg.writer = os.Stderr
 	}
 
-	zerolog.DurationFieldUnit = time.Nanosecond
+	// UNIX Time is faster and smaller than most timestamps
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
+	handler := zerolog.New(cfg.writer).With().Str("service", cfg.GetName()).CallerWithSkipFrameCount(cfg.GetSkip()).Timestamp()
+
 	Logger = &logger{
-		name:    *cfg.name,
-		handler: zerolog.New(cfg.writer).With().Timestamp().Logger().Level(ToLevel(*cfg.level)),
+		handler: handler.Logger().Level(ToLevel(*cfg.GetLevel())),
 	}
 }
 
 func (l *logger) Debug(message string, opts ...log.OptionFunc) {
-	l.withContext(l.handler.Debug(), opts...).Msg(message)
+	withContext(l.handler.Debug(), opts...).Msg(message)
 }
 
 func (l *logger) Info(message string, opts ...log.OptionFunc) {
-	l.withContext(l.handler.Info(), opts...).Msg(message)
+	withContext(l.handler.Info(), opts...).Msg(message)
 }
 
 func (l *logger) Warning(message string, opts ...log.OptionFunc) {
-	l.withContext(l.handler.Warn(), opts...).Msg(message)
+	withContext(l.handler.Warn(), opts...).Msg(message)
 }
 
 func (l *logger) Error(message string, opts ...log.OptionFunc) {
-	l.withContext(l.handler.Error(), opts...).Msg(message)
+	withContext(l.handler.Error().Stack(), opts...).Msg(message)
 }
 
 func (l *logger) Panic(message string, opts ...log.OptionFunc) {
-	l.withContext(l.handler.Panic(), opts...).Msg(message)
+	withContext(l.handler.Panic(), opts...).Msg(message)
 }
 
-func (l *logger) withContext(event *zerolog.Event, opts ...log.OptionFunc) *zerolog.Event {
+func withContext(event *zerolog.Event, opts ...log.OptionFunc) *zerolog.Event {
 
 	opt := &log.Option{}
 	for _, fn := range opts {
@@ -80,8 +80,6 @@ func (l *logger) withContext(event *zerolog.Event, opts ...log.OptionFunc) *zero
 	if err := opt.GetError(); err != nil {
 		event.Err(*err)
 	}
-
-	event.Str("service", l.name)
 
 	return event
 }

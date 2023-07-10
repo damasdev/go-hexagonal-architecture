@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/damasdev/fiber/pkg/log"
 	"github.com/damasdev/fiber/pkg/logger"
@@ -14,18 +13,12 @@ import (
 
 func FiberConfig() fiber.Config {
 	// Define server settings.
-	readTimeout, _ := strconv.Atoi(os.Getenv("SERVER_READ_TIMEOUT"))
-	writeTimeout, _ := strconv.Atoi(os.Getenv("SERVER_WRITE_TIMEOUT"))
-	idleTimeout, _ := strconv.Atoi(os.Getenv("SERVER_IDLE_TIMEOUT"))
 	isPrefork, _ := strconv.ParseBool(os.Getenv("SERVER_PREFORK"))
 
 	// Return Fiber configuration.
 	return fiber.Config{
-		AppName:      os.Getenv("APP_NAME"),
-		ReadTimeout:  time.Second * time.Duration(readTimeout),
-		WriteTimeout: time.Second * time.Duration(writeTimeout),
-		IdleTimeout:  time.Second * time.Duration(idleTimeout),
-		Prefork:      isPrefork,
+		AppName: os.Getenv("APP_NAME"),
+		Prefork: isPrefork,
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			// Status code defaults to 500
 			code := fiber.StatusInternalServerError

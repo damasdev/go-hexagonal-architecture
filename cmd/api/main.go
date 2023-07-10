@@ -38,6 +38,7 @@ func main() {
 
 	logger.Initialize(
 		logger.WithWriter(os.Stdout),
+		logger.WithSkip(4),
 		logger.WithLevel(logger.LogLevel(level)),
 		logger.WithName(os.Getenv("APP_NAME")),
 	)
