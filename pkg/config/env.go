@@ -7,9 +7,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func LoadEnvVars() {
-	dir, _ := os.Getwd()
-	AppPath := dir
+// If you call Load without any args it will default to loading .env in the current path.
+func LoadEnvVars(filenames ...string) {
 
-	godotenv.Load(filepath.Join(AppPath, "/.env"))
+	fileName := "./env"
+	if len(filenames) > 0 {
+		fileName = filenames[0]
+	}
+
+	// Get the current working directory
+	dir, _ := os.Getwd()
+
+	// Set the appPath to the current working directory
+	appPath := filepath.Join(dir, fileName)
+
+	godotenv.Load(appPath)
 }
