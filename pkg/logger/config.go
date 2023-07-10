@@ -4,41 +4,41 @@ import (
 	"io"
 )
 
-type Configs struct {
+type Config struct {
 	name  *string
 	level *LogLevel
 
 	writer io.Writer
 }
 
-type config func(opts *Configs)
+type configFunc func(cfg *Config)
 
-func WithLevel(level LogLevel) config {
-	return func(opts *Configs) {
+func WithLevel(level LogLevel) configFunc {
+	return func(opts *Config) {
 		opts.level = &level
 	}
 }
 
-func WithName(name string) config {
-	return func(configs *Configs) {
-		configs.name = &name
+func WithName(name string) configFunc {
+	return func(cfg *Config) {
+		cfg.name = &name
 	}
 }
 
-func WithWriter(writer io.Writer) config {
-	return func(configs *Configs) {
-		configs.writer = writer
+func WithWriter(writer io.Writer) configFunc {
+	return func(cfg *Config) {
+		cfg.writer = writer
 	}
 }
 
-func (options *Configs) GetName() *string {
-	return options.name
+func (cfg *Config) GetName() *string {
+	return cfg.name
 }
 
-func (options *Configs) GetLevel() *LogLevel {
-	return options.level
+func (cfg *Config) GetLevel() *LogLevel {
+	return cfg.level
 }
 
-func (options *Configs) GetWriter() io.Writer {
-	return options.writer
+func (cfg *Config) GetWriter() io.Writer {
+	return cfg.writer
 }

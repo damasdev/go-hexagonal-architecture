@@ -11,25 +11,25 @@ import (
 
 func TestConfigs(t *testing.T) {
 	// Create a new instance of configs
-	opts := logger.Configs{}
+	cfg := logger.Config{}
 
 	// Test initial values
-	assert.Nil(t, opts.GetName())
-	assert.Nil(t, opts.GetLevel())
-	assert.Nil(t, opts.GetWriter())
+	assert.Nil(t, cfg.GetName())
+	assert.Nil(t, cfg.GetLevel())
+	assert.Nil(t, cfg.GetWriter())
 
 	// Test WithLevel function
 	level := logger.InfoLevel
-	logger.WithLevel(level)(&opts)
-	assert.Equal(t, level, *opts.GetLevel())
+	logger.WithLevel(level)(&cfg)
+	assert.Equal(t, level, *cfg.GetLevel())
 
 	// Test WithName function
 	name := "mylogger"
-	logger.WithName(name)(&opts)
-	assert.Equal(t, name, *opts.GetName())
+	logger.WithName(name)(&cfg)
+	assert.Equal(t, name, *cfg.GetName())
 
 	// Test WithWriter function
 	writer := mocks.NewMockWriter(bytes.NewBuffer(nil))
-	logger.WithWriter(writer)(&opts)
-	assert.Equal(t, writer, opts.GetWriter())
+	logger.WithWriter(writer)(&cfg)
+	assert.Equal(t, writer, cfg.GetWriter())
 }

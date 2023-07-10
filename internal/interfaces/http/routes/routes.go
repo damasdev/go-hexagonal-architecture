@@ -23,8 +23,8 @@ func API(app *fiber.App) {
 	userHandler := userHandler.New(userService)
 
 	// Routes
-	v1 := app.Group("api/v1")
+	api := app.Group("api")
 
 	// User Route
-	v1.Get("/users", userHandler.List)
+	api.Get("/users", userHandler.List)
 }

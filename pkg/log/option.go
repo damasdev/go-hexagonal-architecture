@@ -1,28 +1,28 @@
 package log
 
-type Options struct {
+type Option struct {
 	data *map[string]interface{}
 	err  *error
 }
 
-type Option func(opts *Options)
+type OptionFunc func(opt *Option)
 
-func WithData(data map[string]interface{}) Option {
-	return func(opts *Options) {
-		opts.data = &data
+func WithData(data map[string]interface{}) OptionFunc {
+	return func(opt *Option) {
+		opt.data = &data
 	}
 }
 
-func WithError(err error) Option {
-	return func(opts *Options) {
-		opts.err = &err
+func WithError(err error) OptionFunc {
+	return func(opt *Option) {
+		opt.err = &err
 	}
 }
 
-func (options *Options) GetData() *map[string]interface{} {
-	return options.data
+func (opt *Option) GetData() *map[string]interface{} {
+	return opt.data
 }
 
-func (options *Options) GetError() *error {
-	return options.err
+func (opt *Option) GetError() *error {
+	return opt.err
 }

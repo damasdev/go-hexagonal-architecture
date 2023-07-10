@@ -9,20 +9,20 @@ import (
 )
 
 func TestOptions(t *testing.T) {
-	// Create a new instance of Options
-	opts := log.Options{}
+	// Create a new instance of Option
+	opt := log.Option{}
 
 	// Test initial values
-	assert.Nil(t, opts.GetData())
-	assert.Nil(t, opts.GetError())
+	assert.Nil(t, opt.GetData())
+	assert.Nil(t, opt.GetError())
 
 	// Test WithData function
 	data := map[string]interface{}{"key": "value"}
-	log.WithData(data)(&opts)
-	assert.Equal(t, data, *opts.GetData())
+	log.WithData(data)(&opt)
+	assert.Equal(t, data, *opt.GetData())
 
 	// Test WithError function
 	err := errors.New("some error")
-	log.WithError(err)(&opts)
-	assert.Equal(t, err, *opts.GetError())
+	log.WithError(err)(&opt)
+	assert.Equal(t, err, *opt.GetError())
 }
