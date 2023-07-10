@@ -46,27 +46,27 @@ func Initialize(cfgs ...configFunc) {
 	}
 }
 
-func (zeroLog *logger) Debug(message string, opts ...log.OptionFunc) {
-	zeroLog.withContext(zeroLog.handler.Debug(), opts...).Msg(message)
+func (l *logger) Debug(message string, opts ...log.OptionFunc) {
+	l.withContext(l.handler.Debug(), opts...).Msg(message)
 }
 
-func (zeroLog *logger) Info(message string, opts ...log.OptionFunc) {
-	zeroLog.withContext(zeroLog.handler.Info(), opts...).Msg(message)
+func (l *logger) Info(message string, opts ...log.OptionFunc) {
+	l.withContext(l.handler.Info(), opts...).Msg(message)
 }
 
-func (zeroLog *logger) Warning(message string, opts ...log.OptionFunc) {
-	zeroLog.withContext(zeroLog.handler.Warn(), opts...).Msg(message)
+func (l *logger) Warning(message string, opts ...log.OptionFunc) {
+	l.withContext(l.handler.Warn(), opts...).Msg(message)
 }
 
-func (zeroLog *logger) Error(message string, opts ...log.OptionFunc) {
-	zeroLog.withContext(zeroLog.handler.Error(), opts...).Msg(message)
+func (l *logger) Error(message string, opts ...log.OptionFunc) {
+	l.withContext(l.handler.Error(), opts...).Msg(message)
 }
 
-func (zeroLog *logger) Panic(message string, opts ...log.OptionFunc) {
-	zeroLog.withContext(zeroLog.handler.Panic(), opts...).Msg(message)
+func (l *logger) Panic(message string, opts ...log.OptionFunc) {
+	l.withContext(l.handler.Panic(), opts...).Msg(message)
 }
 
-func (zeroLog *logger) withContext(event *zerolog.Event, opts ...log.OptionFunc) *zerolog.Event {
+func (l *logger) withContext(event *zerolog.Event, opts ...log.OptionFunc) *zerolog.Event {
 
 	opt := &log.Option{}
 	for _, fn := range opts {
@@ -81,7 +81,7 @@ func (zeroLog *logger) withContext(event *zerolog.Event, opts ...log.OptionFunc)
 		event.Err(*err)
 	}
 
-	event.Str("service", zeroLog.name)
+	event.Str("service", l.name)
 
 	return event
 }
