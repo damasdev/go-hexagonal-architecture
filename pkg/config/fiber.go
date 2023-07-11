@@ -40,9 +40,9 @@ func FiberConfig() fiber.Config {
 
 			switch code {
 			case fiber.StatusInternalServerError:
-				logger.Logger.Error(message, log.WithError(err))
+				logger.Logger.Error(message, log.WithError(err), log.WithSkip(3))
 			default:
-				logger.Logger.Warning(message)
+				logger.Logger.Warning(message, log.WithError(err), log.WithSkip(3))
 			}
 
 			// Return status code with error message

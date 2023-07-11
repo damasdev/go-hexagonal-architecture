@@ -7,7 +7,6 @@ import (
 type Config struct {
 	name  string
 	level *LogLevel
-	skip  int
 
 	writer io.Writer
 }
@@ -32,12 +31,6 @@ func WithWriter(writer io.Writer) configFunc {
 	}
 }
 
-func WithSkip(skip int) configFunc {
-	return func(cfg *Config) {
-		cfg.skip = skip
-	}
-}
-
 func (cfg *Config) GetName() string {
 	return cfg.name
 }
@@ -48,8 +41,4 @@ func (cfg *Config) GetLevel() *LogLevel {
 
 func (cfg *Config) GetWriter() io.Writer {
 	return cfg.writer
-}
-
-func (cfg *Config) GetSkip() int {
-	return cfg.skip
 }

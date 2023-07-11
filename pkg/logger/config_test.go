@@ -32,9 +32,4 @@ func TestConfigs(t *testing.T) {
 	writer := mocks.NewMockWriter(bytes.NewBuffer(nil))
 	logger.WithWriter(writer)(&cfg)
 	assert.Equal(t, writer, cfg.GetWriter())
-
-	// Test WithSkip function
-	skip := 1
-	logger.WithSkip(skip)(&cfg)
-	assert.Equal(t, skip, cfg.GetSkip())
 }

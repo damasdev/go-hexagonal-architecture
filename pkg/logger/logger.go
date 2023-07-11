@@ -5,7 +5,6 @@ import (
 
 	"github.com/damasdev/fiber/pkg/log"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/pkgerrors"
 )
 
 var (
@@ -37,9 +36,8 @@ func Initialize(cfgs ...configFunc) {
 
 	// UNIX Time is faster and smaller than most timestamps
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
-	handler := zerolog.New(cfg.writer).With().Str("service", cfg.GetName()).CallerWithSkipFrameCount(cfg.GetSkip()).Timestamp()
+	handler := zerolog.New(cfg.writer).With().Str("service", cfg.GetName()).Timestamp()
 
 	Logger = &logger{
 		handler: handler.Logger().Level(ToLevel(*cfg.GetLevel())),
@@ -59,7 +57,7 @@ func (l *logger) Warning(message string, opts ...log.OptionFunc) {
 }
 
 func (l *logger) Error(message string, opts ...log.OptionFunc) {
-	withContext(l.handler.Error().Stack(), opts...).Msg(message)
+	withContext(l.handler.Error(), opts...).Msg(message)
 }
 
 func (l *logger) Panic(message string, opts ...log.OptionFunc) {
@@ -79,6 +77,12 @@ func withContext(event *zerolog.Event, opts ...log.OptionFunc) *zerolog.Event {
 
 	if err := opt.GetError(); err != nil {
 		event.Err(*err)
+	}
+
+	if skip := opt.GetSkip(); skip > 0 {
+		event.Caller(opt.GetSkip())
+	} else {
+		event.Caller(2)
 	}
 
 	return event

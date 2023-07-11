@@ -25,4 +25,9 @@ func TestOptions(t *testing.T) {
 	err := errors.New("some error")
 	log.WithError(err)(&opt)
 	assert.Equal(t, err, *opt.GetError())
+
+	// Test WithSkip function
+	skip := 1
+	log.WithSkip(skip)(&opt)
+	assert.Equal(t, skip, opt.GetSkip())
 }
