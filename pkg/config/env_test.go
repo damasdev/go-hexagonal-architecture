@@ -4,7 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/damasdev/fiber/pkg/config"
+	"go-hexagonal-architecture/pkg/config"
+
 	"github.com/stretchr/testify/assert"
 )
 

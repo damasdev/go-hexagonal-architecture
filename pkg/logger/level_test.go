@@ -3,7 +3,8 @@ package logger_test
 import (
 	"testing"
 
-	"github.com/damasdev/fiber/pkg/logger"
+	"go-hexagonal-architecture/pkg/logger"
+
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )

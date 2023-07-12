@@ -1,7 +1,7 @@
 package user
 
 import (
-	port "github.com/damasdev/fiber/internal/core/port/user"
+	port "go-hexagonal-architecture/internal/core/port/user"
 )
 
 type service struct {

@@ -1,7 +1,8 @@
 package user
 
 import (
-	port "github.com/damasdev/fiber/internal/core/port/user"
+	port "go-hexagonal-architecture/internal/core/port/user"
+
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

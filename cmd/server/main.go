@@ -8,25 +8,27 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/damasdev/fiber/internal/interfaces/http/routes"
-	"github.com/damasdev/fiber/pkg/config"
-	"github.com/damasdev/fiber/pkg/logger"
+	"go-hexagonal-architecture/internal/interfaces/http/routes"
+	"go-hexagonal-architecture/pkg/config"
+	"go-hexagonal-architecture/pkg/logger"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 func init() {
 	config.LoadEnvVars()
-
-	// config.ConnectMongoDB()
+	config.ConnectMongoDB()
 }
 
 func main() {
-
+	// Init Server
 	server := fiber.New(config.FiberConfig())
 
 	// Register Middleware
 	server.Use(recover.New())
+	server.Use(helmet.New())
 
 	// Register Router
 	routes.API(server)

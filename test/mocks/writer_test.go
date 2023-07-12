@@ -4,7 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/damasdev/fiber/test/mocks"
+	"go-hexagonal-architecture/test/mocks"
+
 	"github.com/stretchr/testify/assert"
 )
 

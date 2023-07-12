@@ -1,10 +1,11 @@
 package routes
 
 import (
-	userService "github.com/damasdev/fiber/internal/core/service/user"
-	userRepository "github.com/damasdev/fiber/internal/infrastructure/repository/mongodb/user"
-	userHandler "github.com/damasdev/fiber/internal/interfaces/http/handler/user"
-	"github.com/damasdev/fiber/pkg/config"
+	userService "go-hexagonal-architecture/internal/core/service/user"
+	userRepository "go-hexagonal-architecture/internal/infrastructure/repository/mongodb/user"
+	userHandler "go-hexagonal-architecture/internal/interfaces/http/handler/user"
+	"go-hexagonal-architecture/pkg/config"
+
 	"github.com/gofiber/fiber/v2"
 )
 

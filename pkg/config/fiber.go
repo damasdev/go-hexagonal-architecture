@@ -5,9 +5,11 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/damasdev/fiber/pkg/log"
-	"github.com/damasdev/fiber/pkg/logger"
-	"github.com/damasdev/fiber/pkg/response"
+	"go-hexagonal-architecture/pkg/log"
+	"go-hexagonal-architecture/pkg/logger"
+	"go-hexagonal-architecture/pkg/response"
+
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -17,8 +19,10 @@ func FiberConfig() fiber.Config {
 
 	// Return Fiber configuration.
 	return fiber.Config{
-		AppName: os.Getenv("APP_NAME"),
-		Prefork: isPrefork,
+		AppName:     os.Getenv("APP_NAME"),
+		Prefork:     isPrefork,
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			// Status code defaults to 500
 			code := fiber.StatusInternalServerError

@@ -1,10 +1,16 @@
 SHELL := /bin/bash
 
-build/api:
-	go build -o bin/api ./cmd/api/main.go
+build/server:
+	go build -o bin/server ./cmd/server/main.go
 
-run/api:
-	go run ./cmd/api
+run/server:
+	go run ./cmd/server
+
+build/consumer:
+	go build -o bin/consumer ./cmd/consumer/main.go
+
+run/consumer:
+	go run ./cmd/consumer
 
 coverage:
 	go test ./... -v -coverprofile=coverage.out && go tool cover -func=coverage.out

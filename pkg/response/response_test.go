@@ -3,7 +3,8 @@ package response_test
 import (
 	"testing"
 
-	"github.com/damasdev/fiber/pkg/response"
+	"go-hexagonal-architecture/pkg/response"
+
 	"github.com/stretchr/testify/assert"
 )
 

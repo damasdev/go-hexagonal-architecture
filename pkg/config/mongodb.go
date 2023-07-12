@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -16,7 +17,6 @@ var (
 )
 
 type Mongo struct {
-	Driver   string
 	Host     string
 	Port     string
 	User     string
@@ -27,7 +27,6 @@ type Mongo struct {
 
 func LoadMongoConfig() Mongo {
 	conf := Mongo{
-		Driver:   os.Getenv("MONGO_DRIVER"),
 		Host:     os.Getenv("MONGO_HOST"),
 		Port:     os.Getenv("MONGO_PORT"),
 		User:     os.Getenv("MONGO_USERNAME"),
@@ -49,9 +48,13 @@ func ConnectMongoDB() {
 		}
 	}
 
-	mongoClient, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(connectionString))
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionString))
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	MongoDB = mongoClient.Database(conf.DBName)
 }

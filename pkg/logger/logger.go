@@ -3,7 +3,8 @@ package logger
 import (
 	"os"
 
-	"github.com/damasdev/fiber/pkg/log"
+	"go-hexagonal-architecture/pkg/log"
+
 	"github.com/rs/zerolog"
 )
 

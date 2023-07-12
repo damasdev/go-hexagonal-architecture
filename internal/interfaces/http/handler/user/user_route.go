@@ -1,10 +1,11 @@
 package user
 
 import (
-	port "github.com/damasdev/fiber/internal/core/port/user"
-	"github.com/damasdev/fiber/pkg/log"
-	"github.com/damasdev/fiber/pkg/logger"
-	"github.com/damasdev/fiber/pkg/response"
+	port "go-hexagonal-architecture/internal/core/port/user"
+	"go-hexagonal-architecture/pkg/log"
+	"go-hexagonal-architecture/pkg/logger"
+	"go-hexagonal-architecture/pkg/response"
+
 	"github.com/gofiber/fiber/v2"
 )
 
