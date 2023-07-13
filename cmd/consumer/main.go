@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	userConsumer "go-hexagonal-architecture/internal/infrastructure/consumer/rabbitmq"
-	"go-hexagonal-architecture/internal/interfaces/constants"
 	"go-hexagonal-architecture/pkg/config"
+	"go-hexagonal-architecture/pkg/constants"
 )
 
 func init() {
