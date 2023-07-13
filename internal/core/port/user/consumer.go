@@ -3,5 +3,5 @@ package user
 import "context"
 
 type UserConsumer interface {
-	Consume(ctx context.Context)
+	Subscribe(ctx context.Context, name string, handler func(message []byte) error)
 }
