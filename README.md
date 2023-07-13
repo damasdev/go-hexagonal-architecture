@@ -1,6 +1,6 @@
-# damasdev/fiber
+# damasdev/go-hexagonal-architecture
 
-Go Fiber with Hexagonal (Ports & Adapters) Architecture
+Go Hexagonal (Ports & Adapters) Architecture
 
 ## Project Structure
 
