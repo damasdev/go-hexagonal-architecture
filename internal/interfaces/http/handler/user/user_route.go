@@ -2,9 +2,9 @@ package user
 
 import (
 	port "go-hexagonal-architecture/internal/core/port/user"
+	"go-hexagonal-architecture/internal/interfaces/http/response"
 	"go-hexagonal-architecture/pkg/log"
 	"go-hexagonal-architecture/pkg/logger"
-	"go-hexagonal-architecture/pkg/response"
 
 	"github.com/gofiber/fiber/v2"
 )

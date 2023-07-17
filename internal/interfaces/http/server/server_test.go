@@ -1,10 +1,9 @@
-package config_test
+package server_test
 
 import (
+	"go-hexagonal-architecture/internal/interfaces/http/server"
 	"os"
 	"testing"
-
-	"go-hexagonal-architecture/pkg/config"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +14,7 @@ func TestFiberConfig(t *testing.T) {
 	os.Setenv("SERVER_PREFORK", "true")
 
 	// Call the FiberConfig function
-	config := config.FiberConfig()
+	config := server.LoadFiberConfig()
 
 	// Assert the configuration values
 	assert.Equal(t, "MyApp", config.AppName)

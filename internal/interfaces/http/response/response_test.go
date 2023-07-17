@@ -1,9 +1,8 @@
 package response_test
 
 import (
+	"go-hexagonal-architecture/internal/interfaces/http/response"
 	"testing"
-
-	"go-hexagonal-architecture/pkg/response"
 
 	"github.com/stretchr/testify/assert"
 )

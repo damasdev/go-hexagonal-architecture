@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"go-hexagonal-architecture/internal/core/domain/user"
 	userConsumer "go-hexagonal-architecture/internal/infrastructure/consumer/rabbitmq"
 	"go-hexagonal-architecture/pkg/config"
-	"go-hexagonal-architecture/pkg/constants"
 )
 
 func init() {
@@ -21,7 +21,7 @@ func main() {
 
 	userConsumer := userConsumer.New(conn)
 
-	userConsumer.Subscribe(ctx, constants.CONSUMER_TOPIC_USER, func(message []byte) error {
+	userConsumer.Subscribe(ctx, user.CONSUMER_TOPIC_USER, func(message []byte) error {
 		fmt.Println("received message:", string(message))
 		return nil
 	})
