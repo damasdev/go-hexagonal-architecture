@@ -1,10 +1,10 @@
 SHELL := /bin/bash
 
 build:
-	go build -o bin/api ./cmd/api/main.go
+	go build -o bin/server ./cmd/server/main.go
 
 run:
-	go run ./cmd/api
+	go run ./cmd/server
 
 coverage:
 	go test ./... -v -coverprofile=coverage.out && go tool cover -func=coverage.out

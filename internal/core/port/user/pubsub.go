@@ -1,7 +1,9 @@
 package user
 
+import "context"
+
 type UserPublisher interface {
-	Publish(body []byte, contentType string) error
+	Publish(ctx context.Context, body []byte, contentType string) error
 }
 
 type UserConsumer interface {
