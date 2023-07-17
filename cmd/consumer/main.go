@@ -1,7 +1,7 @@
 package main
 
 import (
-	userConsumer "go-hexagonal-architecture/internal/interfaces/pubsub/user"
+	userConsumer "go-hexagonal-architecture/internal/infrastructure/messaging/rabbitmq/user"
 	"go-hexagonal-architecture/pkg/config"
 	"log"
 )
